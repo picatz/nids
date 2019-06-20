@@ -6,7 +6,7 @@ Engine written in Go supporting rules written in JavaScript.
 
 ## Install
 
-``console
+```console
 $ go get -u github.com/picatz/nids
 ```
 
