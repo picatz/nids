@@ -40,10 +40,7 @@ if (containsLayer("IPv4")) {
 Now we can start the engine from the command-line:
 
 ```console
-$ nids -interface en0 \
-       -immediate \
-       -rules-setup rule_examples/create_blacklist.js \
-       -rules rule_examples/blacklist.js
+$ nids -interface en0 -immediate -rules-setup rule_examples/create_blacklist.js -rules rule_examples/blacklist.js
 found 8.8.8.8 from blacklist
 found 1.1.1.1 from blacklist
 ...
