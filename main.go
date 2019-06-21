@@ -180,11 +180,28 @@ func main() {
 	}
 
 	var prettyPacket = func(call otto.FunctionCall) otto.Value {
-		val, err := otto.ToValue(packet.String())
+		val, err := otto.ToValue(packet.Dump())
 		if err == nil {
 			return val
 		}
 		return otto.Value{}
+	}
+
+	var containsStr = func(call otto.FunctionCall) otto.Value {
+		lookingFor := call.Argument(0).String()
+		packetStr := string(packet.Data())
+		if strings.Contains(packetStr, lookingFor) {
+			return otto.TrueValue()
+		}
+		return otto.FalseValue()
+	}
+
+	var containsHex = func(call otto.FunctionCall) otto.Value {
+		lookingFor := call.Argument(0).String()
+		if strings.Contains(fmt.Sprintf("%x", packet.Data()), lookingFor) {
+			return otto.TrueValue()
+		}
+		return otto.FalseValue()
 	}
 
 	vm.Set("layerIndex", layerIndex)
@@ -192,6 +209,8 @@ func main() {
 	vm.Set("hardwareAddrStr", hardwareAddrStr)
 	vm.Set("hexdump", hexdump)
 	vm.Set("prettyPacket", prettyPacket)
+	vm.Set("containsStr", containsStr)
+	vm.Set("containsHex", containsHex)
 
 	for packet = range source.Packets() {
 		packetJSONStr, err := packetToJSON(packet)
